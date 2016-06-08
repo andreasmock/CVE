@@ -4,9 +4,7 @@
 #' @param x A dataframe (for single file) or list (for multiple oncotator output files)
 #' @param sample_names A character vector with sample name(s)
 #' @param extension A character vector of extention name
-#' @examples
-#' openCVE(oncotator_example, sample_names="case study")
-#' openCVE(oncotator_example, sample_names="case study",extension="WGCNAmelanoma")
+#' @export
 openCVE <- function(x, sample_names, extension=FALSE) {
   #set app directory
   if(extension=="WGCNAmelanoma"){
