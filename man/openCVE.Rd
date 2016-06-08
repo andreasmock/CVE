@@ -17,8 +17,4 @@ openCVE(x, sample_names, extension = FALSE)
 The openCVE function opens the CVE Shiny app.
 The function to supplement the R package with the Shiny app was suggested by Dean Attali (http://deanattali.com). Currently, the only extension available is a melanoma co-expression network (WGCNAmelanoma).
 }
-\examples{
-openCVE(oncotator_example, sample_names="case study")
-openCVE(oncotator_example, sample_names="case study",extension="WGCNAmelanoma")
-}
 

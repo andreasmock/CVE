@@ -18,7 +18,7 @@ pc_cat <- c("De_novo_Start_InFrame", "De_novo_Start_OutOfFrame",
 #create list only containing protein changing variants (pcv)
 pcv <- vector("list",length(v))
 for (i in 1:length(v)){
-  pcv[[i]] <- v[[i]][v[[i]]$Variant_Type %in% pc_cat,]
+  pcv[[i]] <- v[[i]][v[[i]]$Variant_Classification %in% pc_cat,]
 }
 names(pcv) <- names(v)
 if(0 %in% sapply(pcv,nrow)){

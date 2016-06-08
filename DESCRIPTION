@@ -2,6 +2,8 @@ Package: CVE
 Title: Cancer Variant Explorer
 Version: 0.0.0.9000
 Authors@R: person("Andreas", "Mock", email = "mock.science@gmail.com", role = c("aut", "cre"))
+Author: Andreas Mock [aut, cre]
+Maintainer: Andreas Mock <mock.science@gmail.com>
 Description: Shiny app for interactive variant prioritisation in precision cancer medicine.
 Depends:
     R (>= 3.2.3)
@@ -27,4 +29,4 @@ LazyData: true
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown
-VignetteBuilder: knitr
+VignetteBuilder: rmarkdown
