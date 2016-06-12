@@ -33,7 +33,11 @@ suppressWarnings(
   for(n in 1:length(pcv)){
   rs_matrix = matrix(NA,nrow(pcv[[n]]),length(rs_names))
   for (i in 1:length(rs_names)){
+<<<<<<< HEAD
     rs = strsplit(as.vector(pcv[[n]][,grep("rankscore",colnames(v[[1]]))[i]]), "[|]")
+=======
+    rs = strsplit(pcv[[n]][,grep("rankscore",colnames(v[[1]]))[i]], "[|]")
+>>>>>>> 1d87e8f99a0932836eec25d05bb195e8baad5a75
     rs = as.numeric(sapply(rs,"[", i=1))
     rs_matrix[,i] = rs
   }
