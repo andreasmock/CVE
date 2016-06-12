@@ -10,9 +10,6 @@ Depends:
     shiny,
     ConsensusClusterPlus
 Imports:
-=======
-    shiny
-Import:
     WGCNA,
     limma,
     phytools,
@@ -23,7 +20,6 @@ Import:
     rmarkdown,
     RColorBrewer,
     ggplot2,
-=======
     ConsensusClusterPlus,
     ape,
     jsonlite,
