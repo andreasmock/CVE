@@ -10,8 +10,6 @@ Depends:
     shiny,
     ConsensusClusterPlus
 Imports:
-    WGCNA,
-    limma,
     phytools,
     GOstats,
     org.Hs.eg.db,
