@@ -10,13 +10,21 @@ Depends:
     shiny,
     ConsensusClusterPlus
 Imports:
+    WGCNA,
     plyr,
     rmarkdown,
+    GO.db,
     RColorBrewer,
     ggplot2,
     ape,
     jsonlite,
-    gplots
+    gplots,
+    limma,
+    phytools,
+    GOstats,
+    GSEABase,
+    impute,
+    preprocessCore
 License: MIT
 Encoding: UTF-8
 LazyData: true

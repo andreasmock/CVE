@@ -315,10 +315,10 @@ shinyServer(function(input, output, session) {
                                    length(JSON$matchedTerms[[5]][[i]]$drugName)))
         }
         df_druginfo = matrix(NA,0,0)
-        for (i in 1:ngenes.JSON){
+        for (i in 1:ngenes_JSON){
           df_druginfo = rbind(df_druginfo, JSON$matchedTerms[[5]][[i]])
         }
-        data.frame(geneName=as.vector(df.gene), drugName=df_druginfo$drugName,
+        data.frame(geneName=as.vector(df_gene), drugName=df_druginfo$drugName,
                    interactionType=df_druginfo$interactionType,
                    source = df_druginfo$source)
       }
@@ -339,10 +339,10 @@ shinyServer(function(input, output, session) {
                                    length(JSON$matchedTerms[[5]][[i]]$drugName)))
         }
         df_druginfo = matrix(NA,0,0)
-        for (i in 1:ngenes.JSON){
+        for (i in 1:ngenes_JSON){
           df_druginfo = rbind(df_druginfo, JSON$matchedTerms[[5]][[i]])
         }
-        drugtable = data.frame(geneName=as.vector(df.gene), drugName=df_druginfo$drugName,
+        drugtable = data.frame(geneName=as.vector(df_gene), drugName=df_druginfo$drugName,
                    interactionType=df_druginfo$interactionType,
                    source = df_druginfo$source)
       }
