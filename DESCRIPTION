@@ -10,14 +10,10 @@ Depends:
     shiny,
     ConsensusClusterPlus
 Imports:
-    phytools,
-    org.Hs.eg.db,
-    GSEABase,
     plyr,
     rmarkdown,
     RColorBrewer,
     ggplot2,
-    ConsensusClusterPlus,
     ape,
     jsonlite,
     gplots
