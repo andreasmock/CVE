@@ -7,7 +7,6 @@ Maintainer: Andreas Mock <mock.science@gmail.com>
 Description: Shiny app for interactive variant prioritisation in precision cancer medicine.
 Depends:
     R (>= 3.3.0),
-<<<<<<< HEAD
     shiny,
     ConsensusClusterPlus
 Imports:
@@ -20,16 +19,13 @@ Import:
     GOstats,
     org.Hs.eg.db,
     GSEABase,
->>>>>>> 1d87e8f99a0932836eec25d05bb195e8baad5a75
     plyr,
     rmarkdown,
     RColorBrewer,
     ggplot2,
-<<<<<<< HEAD
 =======
     ConsensusClusterPlus,
     ape,
->>>>>>> 1d87e8f99a0932836eec25d05bb195e8baad5a75
     jsonlite,
     gplots
 License: MIT
