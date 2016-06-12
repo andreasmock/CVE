@@ -11,7 +11,6 @@ Depends:
     ConsensusClusterPlus
 Imports:
     phytools,
-    GOstats,
     org.Hs.eg.db,
     GSEABase,
     plyr,
