@@ -6,7 +6,8 @@ Author: Andreas Mock [aut, cre]
 Maintainer: Andreas Mock <mock.science@gmail.com>
 Description: Shiny app for interactive variant prioritisation in precision cancer medicine.
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.3.0),
+    shiny
 Import:
     WGCNA,
     limma,
@@ -16,7 +17,6 @@ Import:
     GSEABase,
     plyr,
     rmarkdown,
-    shiny,
     RColorBrewer,
     ggplot2,
     ConsensusClusterPlus,
