@@ -14,7 +14,6 @@ Imports:
     rmarkdown,
     RColorBrewer,
     ggplot2,
-    ape,
     jsonlite,
     gplots
 License: MIT
