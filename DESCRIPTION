@@ -6,7 +6,7 @@ Author: Andreas Mock [aut, cre]
 Maintainer: Andreas Mock <mock.science@gmail.com>
 Description: Shiny app for interactive variant prioritisation in precision cancer medicine.
 Depends:
-    R (>= 3.2.2),
+    R (>= 3.2.1),
     shiny,
     ConsensusClusterPlus
 Imports:
