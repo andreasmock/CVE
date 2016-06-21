@@ -8,7 +8,7 @@ openCVE(x, sample_names, extension = FALSE)
 }
 \examples{
 openCVE(oncotator_example,"case study")
-openCVE(oncotator_example,"case study","WGCNAmelanoma")
+openCVE(oncotator_example,"case study WGCNA","WGCNAmelanoma")
 }
 \arguments{
 \item{x}{A dataframe (for single file) or list (for multiple oncotator output files)}
