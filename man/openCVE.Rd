@@ -6,6 +6,9 @@
 \usage{
 openCVE(x, sample_names, extension = FALSE)
 }
+\examples{
+openCVE(oncotator_example,"case study")
+}
 \arguments{
 \item{x}{A dataframe (for single file) or list (for multiple oncotator output files)}
 
