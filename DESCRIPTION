@@ -24,12 +24,14 @@ Imports:
     GOstats,
     GSEABase,
     impute,
-    preprocessCore
+    preprocessCore,
+    pingr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
 Suggests: knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: rmarkdown
 biocViews: BiomedicalInformatics
