@@ -9,7 +9,7 @@ fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
-  %\usepackage[utf8]{inputenc}
+  %\usepackage[ascii]{inputenc}
 ---
 
 The following tutorial describes the generation of a weighted co-expression network from TCGA (The Cancer Genome Atlas) RNAseq data using the `WGCNA` *R* package by Langfelder and Horvarth[^1]. In addition, individual genes and modules will be related to sample traits. Exemplarly, a co-expression network for skin cutaneous melanomas (SKCM) will be generated. However, the following weighted gene co-expression analysis (WGCNA) framework is applicable to any TCGA tumour entity. 
