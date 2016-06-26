@@ -1,15 +1,15 @@
 ---
-title: "Cancer Variant Explorer (CVE) tutorial"
+title: 'Cancer Variant Explorer (CVE) tutorial'
 author: | 
   | Andreas Mock
   | Cancer Research UK Cambridge Institute, University of Cambridge
-date: "`r Sys.Date()`"
+date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
-  %\usepackage[ascii]{inputenc}
+  %\usepackage[utf8]{inputenc}
 ---
 
 ###1) Introduction
@@ -17,8 +17,8 @@ vignette: >
 The goal of the tutorial is to present the functionality of the CVE package. CVE can be installed via Bioconductor 
 
 ```{r,eval=FALSE}
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("CVE")
+source('http://www.bioconductor.org/biocLite.R')
+biocLite('CVE')
 ```
 
 and once installed loaded into the R session by
@@ -31,7 +31,7 @@ library(CVE)
 
 CVE leverages output files of the Oncotator Annotation Tool[^1] to prioritise variants. The CVE package includes the example Oncotator output file `oncotator_example` for the 1087 mutations prioritised in the melanoma case study. CVE can either work with a data frame containing the output file of one sample or a list containing multiple files.
 
-```{r, echo=F,results="hide", eval=F}
+```{r, echo=F,results='hide', eval=F}
 devtools::load_all()
 ```
 
@@ -41,13 +41,13 @@ devtools::load_all()
 The function `openCVE` opens the CVE shiny app. It requires the oncotator output file as a data frame (output of 1 sample) or a list (output of multiple samples) and the corresponding sample name(s).  
 
 ```{r, eval=FALSE}
-openCVE(oncotator_example, sample_names="case study")
+openCVE(oncotator_example, sample_names='case study')
 ```
 
 To showcase the modularity of CVE, we added an extension for WGCNA
 
 ```{r, eval=FALSE}
-openCVE(oncotator_example, sample_names="case study", extension="WGCNAmelanoma")
+openCVE(oncotator_example, sample_names='case study', extension='WGCNAmelanoma')
 ```
 
 ###4) Priorising variants with CVE
