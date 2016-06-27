@@ -1,6 +1,6 @@
 Package: CVE
 Title: Cancer Variant Explorer
-Version: 0.99.38
+Version: 0.99.40
 Authors@R: person("Andreas", "Mock", email = "mock.science@gmail.com", role = c("aut", "cre"))
 Author: Andreas Mock [aut, cre]
 Maintainer: Andreas Mock <mock.science@gmail.com>
@@ -32,6 +32,7 @@ LazyData: true
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
-    testthat
+    testthat,
+    BiocStyle
 VignetteBuilder: knitr
 biocViews: BiomedicalInformatics

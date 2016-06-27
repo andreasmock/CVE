@@ -4,7 +4,7 @@ author: |
   | Andreas Mock
   | Cancer Research UK Cambridge Institute, University of Cambridge
 date: '`r Sys.Date()`'
-output: rmarkdown::html_vignette
+output: BiocStyle::html_document
 fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Weighted gene co-expression network analysis with TCGA RNAseq data}
@@ -15,7 +15,7 @@ vignette: >
 The following tutorial describes the generation of a weighted co-expression network from TCGA (The Cancer Genome Atlas) RNAseq data using the `WGCNA` *R* package by Langfelder and Horvarth[^1]. In addition, individual genes and modules will be related to sample traits. Exemplarly, a co-expression network for skin cutaneous melanomas (SKCM) will be generated. However, the following weighted gene co-expression analysis (WGCNA) framework is applicable to any TCGA tumour entity. 
 
 
-### 1) Assembly and preprocessing of TCGA RNAseq data
+#Assembly and preprocessing of TCGA RNAseq data
 
 Melanoma RNAseq data were downloaded as expression estimates per gene (RNAseq2 level 3 data) from the [TCGA data portal](https://tcga-data.nci.nih.gov/tcga/). 
 For WGCNA, the individual TCGA RNAseq2 level 3 files were concatenated to a matrix `RNAseq` with gene symbols as row and TCGA patient barcodes as column names. 
@@ -42,7 +42,7 @@ A large fraction of genes are not differentially expressed between samples. Thes
 WGCNA_matrix = t(RNAseq_voom[order(apply(RNAseq_voom,1,mad), decreasing = T)[1:5000],])
 ```
 
-### 2) Construction of co-expression network
+#Construction of co-expression network
 
 The connections within a network can be fully described by its *adjacency matrix* $a_{ij}$, a $N~x~N$ matrix whose component $a_{ij}$ denotes the connection strength between node $i$ and $j$. The connection strength is defined by the *co-expression similarity* $s_{ij}$. The most widely used method defines $s_{ij}$ as the absolute value of the correlation coefficient between the profiles of node $i$ and $j$: $s_{ij} = |cor(x_i,x_j)|$. However, we employed the biweight midcorrelation to define $s_{ij}$, as it is more robust to outliers[^4]. This feature is pivotal, as we do not expect genes to be co-expressed in all patients. 
 
@@ -87,7 +87,7 @@ w = 1-a
 
 Please note that TOM-based (topological overlap matrix) dissimilarity proposed by Horvarth and colleagues did not result in distinct gene modules for the analysed melanoma network. 
 
-### 3) Identification of co-expression modules
+#Identification of co-expression modules
 
 To identify co-expression modules, genes are next clustered based on the dissimilarity measure, where branches of the dendrogram correspond to modules. The gene dendrogram obtained by average linkage hierarchical clustering is depicted in figure 2. Ultimately, gene co-expression modules are detected by applying a branch cutting method. We employed the dynamic branch cut method developed by Langfelder and colleagues [^6], as constant height cutoffs exhibit suboptimal performance on complicated dendrograms. WGCNA of the 472 TCGA melanoma samples revealed 41 co-expression modules. All genes that are not significantly co-expressed within a module are summarized in an additional module 0 for further analysis.
  
@@ -126,7 +126,7 @@ plot.phylo(as.phylo(METree),type = 'fan',show.tip.label = FALSE, main='')
 tiplabels(frame = 'circle',col='black', text=rep('',length(unique(modules))), bg = levels(as.factor(module.colours)))
 ```
 
-### 4) Relation of co-expression modules to sample traits
+#Relation of co-expression modules to sample traits
 
 An advantage of co-expression network analysis is the possibility to integrate external information. 
 At the lowest hierarchical level, *gene significance* (GS) measures can be defined as the statistical significance (i.e. p-value, $p_i$) between the $i$-th node profile (gene) $x_i$ and the sample trait $T$
@@ -223,7 +223,7 @@ METree.GO$labels = GO.module.name[label.order]
 plotTree.wBars(as.phylo(METree.GO), MS.lscore.bar, tip.labels = TRUE, scale = 0.2)
 ```
 
-### 5) Exploration of individual genes within co-expression module
+#Exploration of individual genes within co-expression module
 
 Assessing the module significance for different sample traits facilitates an understanding of individual co-expression modules for melanoma biology. As for the prioritisation of variants we are next interested in the role of the variant gene within a co-expression module. To this end, Langfelder and Horvath suggest a 'fuzzy' measure of *module membership* defined as
 
@@ -243,6 +243,13 @@ plot(-log10(GS.lscore[modules==MOI,1]), MM[modules==MOI,MOI], pch=20,
 abline(v=-log10(0.05), lty=2, lwd=2)
 ```
 
+#Session information
+
+```{r}
+sessionInfo()
+```
+
+#References
 
 [^1]: Peter Langfelder and Steve Horvath. WGCNA: an R package for weighted correlation network analysis. In: BMC Bioinformatics 9 (Jan. 2008), pp. 559–559.
 

@@ -4,7 +4,7 @@ author: |
   | Andreas Mock
   | Cancer Research UK Cambridge Institute, University of Cambridge
 date: '`r Sys.Date()`'
-output: rmarkdown::html_vignette
+output: BiocStyle::html_document
 fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Cancer Variant Explorer (CVE) tutorial}
@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{utf8}
 ---
 
-###1) Introduction
+# Introduction
 
 The goal of the tutorial is to present the functionality of the CVE package. CVE can be installed via Bioconductor 
 
@@ -27,7 +27,7 @@ and once installed loaded into the R session by
 library(CVE)
 ```
 
-###2) Oncotator Annotation
+# Oncotator Annotation
 
 CVE leverages output files of the Oncotator Annotation Tool[^1] to prioritise variants. The CVE package includes the example Oncotator output file `oncotator_example` for the 1087 mutations prioritised in the melanoma case study. CVE can either work with a data frame containing the output file of one sample or a list containing multiple files.
 
@@ -36,7 +36,7 @@ devtools::load_all()
 ```
 
 
-###3) Reading data and opening the shiny app
+# Reading data and opening the shiny app
 
 The function `openCVE` opens the CVE shiny app. It requires the oncotator output file as a data frame (output of 1 sample) or a list (output of multiple samples) and the corresponding sample name(s).  
 
@@ -50,16 +50,16 @@ To showcase the modularity of CVE, we added an extension for WGCNA
 openCVE(oncotator_example, sample_names='case study', extension='WGCNAmelanoma')
 ```
 
-###4) Priorising variants with CVE
+# Priorising variants with CVE
 
 For details regarding prioritising variants, please refer to the paper [^2].
 
-### Session information
+# Session information
 
 ```{r}
 sessionInfo()
 ```
 
-### References
+# References
 [^1]: Ramos, A.H., Lichtenstein, L., Gupta, M., Lawrence, M.S., Pugh, T.J., Saksena, G., Meyerson, M., Getz, G.: Oncotator: Cancer Variant Annotation Tool. Human Mutation 36(4), 2423–2429 (2015)
 [^2]: Mock, A., Murph, S., Morris, J., Marass, F., Rosenfeld, N., Massie, C.: CVE: an R package for interactive variant prioritisation in precision cancer medicine. 
