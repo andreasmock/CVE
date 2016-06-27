@@ -33,5 +33,5 @@ RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
     testthat
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr
 biocViews: BiomedicalInformatics

@@ -7,7 +7,7 @@ date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Cancer Variant Explorer (CVE) tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{utf8}
 ---
