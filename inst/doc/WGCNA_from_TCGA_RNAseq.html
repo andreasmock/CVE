@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2016-06-27" />
+
+<title>Weighted gene co-expression network analysis with TCGA RNAseq data</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Weighted gene co-expression network analysis with TCGA RNAseq data</h1>
+<h4 class="author"><em><p>Andreas Mock<br />
+Cancer Research UK Cambridge Institute, University of Cambridge</p></em></h4>
+<h4 class="date"><em>2016-06-27</em></h4>
+
+
+
+<p>The following tutorial describes the generation of a weighted co-expression network from TCGA (The Cancer Genome Atlas) RNAseq data using the <code>WGCNA</code> <em>R</em> package by Langfelder and Horvarth<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. In addition, individual genes and modules will be related to sample traits. Exemplarly, a co-expression network for skin cutaneous melanomas (SKCM) will be generated. However, the following weighted gene co-expression analysis (WGCNA) framework is applicable to any TCGA tumour entity.</p>
+<div id="assembly-and-preprocessing-of-tcga-rnaseq-data" class="section level3">
+<h3>1) Assembly and preprocessing of TCGA RNAseq data</h3>
+<p>Melanoma RNAseq data were downloaded as expression estimates per gene (RNAseq2 level 3 data) from the <a href="https://tcga-data.nci.nih.gov/tcga/">TCGA data portal</a>. For WGCNA, the individual TCGA RNAseq2 level 3 files were concatenated to a matrix <code>RNAseq</code> with gene symbols as row and TCGA patient barcodes as column names.</p>
+<p>Further preprocessing included the removal of control samples (for more information see the <a href="https://wiki.nci.nih.gov/display/TCGA/TCGA+barcode">TCGA Wiki</a>) and expression estimates with counts in less than 20% of cases.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RNAseq =<span class="st"> </span>RNAseq[<span class="kw">apply</span>(RNAseq,<span class="dv">1</span>,function(x) <span class="kw">sum</span>(x==<span class="dv">0</span>))&lt;<span class="kw">ncol</span>(RNAseq)*<span class="fl">0.8</span>,]</code></pre></div>
+<p>To relate co-expression modules to disease phenotypes, clinical metadata is needed. As for the melanoma TCGA data, the <code>clinical</code> data was published as a curated spreadsheet in the supplements of the latest publication (suppl_table_S1D.txt)<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>As read counts follow a negative binomial distribution, which has a mathematical theory less tractable than that of the normal distribution, RNAseq data was normalised with the <code>voom</code> methodology<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. The <code>voom</code> method estimates the mean-variance of the log-counts and generates a precision weight for each observation. This way, a comparative analysis can be performed with all bioinformatic workflows originally developed for microarray analyses.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RNAseq_voom =<span class="st"> </span>limma::<span class="kw">voom</span>(RNAseq)$E</code></pre></div>
+<p>A large fraction of genes are not differentially expressed between samples. These have to be excluded from WGCNA, as two genes without notable variance in expression between patients will be highly correlated. As a heuristic cutoff, the top 5000 most variant genes have been used in most WGCNA studies. In detail the median absolute devision (MAD) was used as a robust measure of variability.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#transpose matrix to correlate genes in the following</span>
+WGCNA_matrix =<span class="st"> </span><span class="kw">t</span>(RNAseq_voom[<span class="kw">order</span>(<span class="kw">apply</span>(RNAseq_voom,<span class="dv">1</span>,mad), <span class="dt">decreasing =</span> T)[<span class="dv">1</span>:<span class="dv">5000</span>],])</code></pre></div>
+</div>
+<div id="construction-of-co-expression-network" class="section level3">
+<h3>2) Construction of co-expression network</h3>
+<p>The connections within a network can be fully described by its <em>adjacency matrix</em> <span class="math inline">\(a_{ij}\)</span>, a <span class="math inline">\(N~x~N\)</span> matrix whose component <span class="math inline">\(a_{ij}\)</span> denotes the connection strength between node <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. The connection strength is defined by the <em>co-expression similarity</em> <span class="math inline">\(s_{ij}\)</span>. The most widely used method defines <span class="math inline">\(s_{ij}\)</span> as the absolute value of the correlation coefficient between the profiles of node <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>: <span class="math inline">\(s_{ij} = |cor(x_i,x_j)|\)</span>. However, we employed the biweight midcorrelation to define <span class="math inline">\(s_{ij}\)</span>, as it is more robust to outliers<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. This feature is pivotal, as we do not expect genes to be co-expressed in all patients.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#similarity measure between gene profiles: biweight midcorrelation</span>
+s =<span class="st"> </span><span class="kw">abs</span>(WGCNA::<span class="kw">bicor</span>(WGCNA_matrix))</code></pre></div>
+<p>Originally, the co-expression similarity matrix was transformed into the adjacency matrix using a ‘hard’ threshold. In these <em>unweighted co-expression networks</em>, two genes were identified to be linked (<span class="math inline">\(a_{ij} = 1\)</span>), if the absolute correlation between their expression profiles were higher than a ‘hard’ threshold <span class="math inline">\(\tau\)</span>. However, this hard threshold does not reflect the underlying continuous co-expression measure and leads to a significant loss of information. As a consequence, Horvath and colleagues introduced a new framework for <em>weighted gene co-expression analysis</em> (WGCNA)<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. At its core, a weighted adjacency is defined by raising the co-expression similarity to a power (‘soft’ threshold):</p>
+<p><span class="math display">\[a_{ij} = s_{ij}^\beta\]</span></p>
+<p>with <span class="math inline">\(\beta \geq 1\)</span>. To choose an appropriate <span class="math inline">\(\beta\)</span>-value, the authors present a methodology that assesses the scale free topology of the network. For detailed rational of this approach, please see Zhang and Horvath<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(WGCNA)
+powers =<span class="st"> </span><span class="kw">c</span>(<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">10</span>), <span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">12</span>, <span class="dt">to=</span><span class="dv">20</span>, <span class="dt">by=</span><span class="dv">2</span>))
+sft =<span class="st"> </span><span class="kw">pickSoftThreshold</span>(WGCNA_matrix, <span class="dt">powerVector =</span> powers, <span class="dt">verbose =</span> <span class="dv">5</span>)
+<span class="kw">plot</span>(sft$fitIndices[,<span class="dv">1</span>], -<span class="kw">sign</span>(sft$fitIndices[,<span class="dv">3</span>])*sft$fitIndices[,<span class="dv">2</span>],
+     <span class="dt">xlab=</span><span class="st">'Soft Threshold (power)'</span>,<span class="dt">ylab=</span><span class="st">'Scale Free Topology Model Fit,signed R^2'</span>,
+     <span class="dt">type=</span><span class="st">'n'</span>, <span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">'Scale independence'</span>));
+<span class="kw">text</span>(sft$fitIndices[,<span class="dv">1</span>], -<span class="kw">sign</span>(sft$fitIndices[,<span class="dv">3</span>])*sft$fitIndices[,<span class="dv">2</span>],
+     <span class="dt">labels=</span>powers,<span class="dt">cex=</span><span class="dv">1</span>,<span class="dt">col=</span><span class="st">'red'</span>); <span class="kw">abline</span>(<span class="dt">h=</span><span class="fl">0.90</span>,<span class="dt">col=</span><span class="st">'red'</span>)</code></pre></div>
+<p>As for the melanoma network, a beta value of 3 was the lowest power for which the scale-free topology fit index curve flattens out upon reaching a high value (<span class="math inline">\(R^2\)</span> 0.9 as suggested by Langfelder and Horvarth).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#calculation of adjacency matrix</span>
+beta =<span class="st"> </span><span class="dv">3</span>
+a =<span class="st"> </span>s^beta</code></pre></div>
+<p>Lastly, the dissimilarity measure is defined by</p>
+<p><span class="math display">\[w_{ij} = 1 - a_{ij}\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#dissimilarity measure</span>
+w =<span class="st"> </span><span class="dv">1</span>-a</code></pre></div>
+<p>Please note that TOM-based (topological overlap matrix) dissimilarity proposed by Horvarth and colleagues did not result in distinct gene modules for the analysed melanoma network.</p>
+</div>
+<div id="identification-of-co-expression-modules" class="section level3">
+<h3>3) Identification of co-expression modules</h3>
+<p>To identify co-expression modules, genes are next clustered based on the dissimilarity measure, where branches of the dendrogram correspond to modules. The gene dendrogram obtained by average linkage hierarchical clustering is depicted in figure 2. Ultimately, gene co-expression modules are detected by applying a branch cutting method. We employed the dynamic branch cut method developed by Langfelder and colleagues <a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>, as constant height cutoffs exhibit suboptimal performance on complicated dendrograms. WGCNA of the 472 TCGA melanoma samples revealed 41 co-expression modules. All genes that are not significantly co-expressed within a module are summarized in an additional module 0 for further analysis.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(WGCNA)
+<span class="co">#create gene tree by average linkage hierarchical clustering </span>
+geneTree =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">as.dist</span>(w), <span class="dt">method =</span> <span class="st">'average'</span>)
+
+<span class="co">#module identification using dynamic tree cut algorithm</span>
+modules =<span class="st"> </span><span class="kw">cutreeDynamic</span>(<span class="dt">dendro =</span> geneTree, <span class="dt">distM =</span> w, <span class="dt">deepSplit =</span> <span class="dv">4</span>, <span class="dt">pamRespectsDendro =</span> <span class="ot">FALSE</span>,
+                            <span class="dt">minClusterSize =</span> <span class="dv">30</span>)
+<span class="co">#assign module colours</span>
+module.colours =<span class="st"> </span><span class="kw">labels2colors</span>(modules)
+
+<span class="co">#plot the dendrogram and corresponding colour bars underneath</span>
+<span class="kw">plotDendroAndColors</span>(geneTree, module.colours, <span class="st">'Module colours'</span>, <span class="dt">dendroLabels =</span> <span class="ot">FALSE</span>, <span class="dt">hang =</span> <span class="fl">0.03</span>,
+                    <span class="dt">addGuide =</span> <span class="ot">TRUE</span>, <span class="dt">guideHang =</span> <span class="fl">0.05</span>, <span class="dt">main=</span><span class="st">''</span>)</code></pre></div>
+<p>The relation between the identified co-expression modules can be visualized by a dendrogram of their <em>eigengenes</em> (fig. 3). The module <em>eigengene</em> is defined as the first principal component of its expression matrix. It could be shown that the module= <em>eigengene</em> is highly correlated with the gene that has the highest intramodular connectivity<a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phytools)
+<span class="co">#calculate eigengenes</span>
+MEs =<span class="st"> </span><span class="kw">moduleEigengenes</span>(WGCNA_matrix, <span class="dt">colors =</span> module.colours, <span class="dt">excludeGrey =</span> <span class="ot">FALSE</span>)$eigengenes
+
+<span class="co">#calculate dissimilarity of module eigengenes</span>
+MEDiss =<span class="st"> </span><span class="dv">1</span>-<span class="kw">cor</span>(MEs);
+
+<span class="co">#cluster module eigengenes</span>
+METree =<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">as.dist</span>(MEDiss), <span class="dt">method =</span> <span class="st">'average'</span>);
+
+<span class="co">#plot the result with phytools package</span>
+<span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))
+<span class="kw">plot.phylo</span>(<span class="kw">as.phylo</span>(METree),<span class="dt">type =</span> <span class="st">'fan'</span>,<span class="dt">show.tip.label =</span> <span class="ot">FALSE</span>, <span class="dt">main=</span><span class="st">''</span>)
+<span class="kw">tiplabels</span>(<span class="dt">frame =</span> <span class="st">'circle'</span>,<span class="dt">col=</span><span class="st">'black'</span>, <span class="dt">text=</span><span class="kw">rep</span>(<span class="st">''</span>,<span class="kw">length</span>(<span class="kw">unique</span>(modules))), <span class="dt">bg =</span> <span class="kw">levels</span>(<span class="kw">as.factor</span>(module.colours)))</code></pre></div>
+</div>
+<div id="relation-of-co-expression-modules-to-sample-traits" class="section level3">
+<h3>4) Relation of co-expression modules to sample traits</h3>
+<p>An advantage of co-expression network analysis is the possibility to integrate external information. At the lowest hierarchical level, <em>gene significance</em> (GS) measures can be defined as the statistical significance (i.e. p-value, <span class="math inline">\(p_i\)</span>) between the <span class="math inline">\(i\)</span>-th node profile (gene) <span class="math inline">\(x_i\)</span> and the sample trait <span class="math inline">\(T\)</span></p>
+<p><span class="math display">\[GS_i = -log~p_i\]</span></p>
+<p><em>Module significance</em> in turn can be determined as the average absolute gene significance measure. This conceptual framework can be adapted to any research question. The clinical metadata used in the following was obtained from the recent TCGA melanoma publication<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a> (Supplemental Table S1D: Patient Centric Table).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#load clinical metadata. Make sure that patient barcodes are in the same format </span>
+<span class="co">#create second expression matrix for which the detailed clinical data is available </span>
+WGCNA_matrix2 =<span class="st"> </span>WGCNA_matrix[<span class="kw">match</span>(clinical$Name, <span class="kw">rownames</span>(WGCNA_matrix)),]
+
+<span class="co">#CAVE: 1 sample of detailed clinical metadata is not in downloaded data (TCGA-GN-A269-01')</span>
+not.available =<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(<span class="kw">rownames</span>(WGCNA_matrix2))==<span class="ot">TRUE</span>)
+WGCNA_matrix2 =<span class="st"> </span>WGCNA_matrix2[-not.available,]
+<span class="kw">str</span>(WGCNA_matrix2)
+
+<span class="co">#hence it needs to be removed from clinical table for further analysis</span>
+clinical =<span class="st"> </span>clinical[-not.available,]</code></pre></div>
+<p>Representatively, co-expression modules will be related to the so called lymphocyte score, which summarises the lymphocyte distribution and density in the pathological review.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#grouping in high and low lymphocyte score (lscore)</span>
+lscore =<span class="st"> </span><span class="kw">as.numeric</span>(clinical$LYMPHOCYTE.SCORE)
+lscore[lscore&lt;<span class="dv">3</span>] =<span class="st"> </span><span class="dv">0</span>
+lscore[lscore&gt;<span class="dv">0</span>] =<span class="st"> </span><span class="dv">1</span>
+
+<span class="co">#calculate gene significance measure for lymphocyte score (lscore) - Welch's t-Test</span>
+GS_lscore =<span class="st"> </span><span class="kw">t</span>(<span class="kw">sapply</span>(<span class="dv">1</span>:<span class="kw">ncol</span>(WGCNA_matrix2),function(x)<span class="kw">c</span>(<span class="kw">t.test</span>(WGCNA_matrix2[,x]~lscore,<span class="dt">var.equal=</span>F)$p.value,
+                                          <span class="kw">t.test</span>(WGCNA_matrix2[,x]~lscore,<span class="dt">var.equal=</span>F)$estimate[<span class="dv">1</span>],
+                                          <span class="kw">t.test</span>(WGCNA_matrix2[,x]~lscore,<span class="dt">var.equal=</span>F)$estimate[<span class="dv">2</span>])))
+GS_lscore =<span class="st"> </span><span class="kw">cbind</span>(GS.lscore, <span class="kw">abs</span>(GS_lscore[,<span class="dv">2</span>] -<span class="st"> </span>GS_lscore[,<span class="dv">3</span>]))
+<span class="kw">colnames</span>(GS_lscore) =<span class="st"> </span><span class="kw">c</span>(<span class="st">'p_value'</span>,<span class="st">'mean_high_lscore'</span>,<span class="st">'mean_low_lscore'</span>,
+                        <span class="st">'effect_size(high-low score)'</span>); <span class="kw">rownames</span>(GS_lscore) =<span class="st"> </span><span class="kw">colnames</span>(WGCNA_matrix2)</code></pre></div>
+<p>To enable a high-level interpretation of the dendrogram of module eigengenes, gene ontology (GO) enrichment analysis was performed for the module genes using the <code>GOstats</code> <em>R</em> package <a href="#fn10" class="footnoteRef" id="fnref10"><sup>10</sup></a>. Modules were named according to the most significant GO einrichment given a cutoff for the ontology size. The smaller the ontology size, the more specific the term. In this analysis a cutoff of 100 terms per ontology was chosen.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#reference genes = all 5000 top mad genes </span>
+ref_genes =<span class="st"> </span><span class="kw">colnames</span>(WGCNA_matrix2)
+
+<span class="co">#create data frame for GO analysis</span>
+GO =<span class="st"> </span><span class="kw">toTable</span>(org.Hs.egGO); SYMBOL =<span class="st"> </span><span class="kw">toTable</span>(org.Hs.egSYMBOL)
+GO_data_frame =<span class="st"> </span><span class="kw">data.frame</span>(GO$go_id, GO$Evidence,SYMBOL$symbol[<span class="kw">match</span>(GO$gene_id,SYMBOL$gene_id)])
+
+<span class="co">#create GOAllFrame object</span>
+GO_ALLFrame =<span class="st"> </span><span class="kw">GOAllFrame</span>(<span class="kw">GOFrame</span>(GO_data_frame, <span class="dt">organism =</span> <span class="st">'Homo sapiens'</span>))
+
+<span class="co">#create gene set</span>
+gsc &lt;-<span class="st"> </span><span class="kw">GeneSetCollection</span>(GO_ALLFrame, <span class="dt">setType =</span> <span class="kw">GOCollection</span>())
+
+<span class="co">#perform GO enrichment analysis and save results to list - this make take several minutes</span>
+GSEAGO =<span class="st"> </span><span class="kw">vector</span>(<span class="st">'list'</span>,<span class="kw">length</span>(<span class="kw">unique</span>(modules)))
+for(i in <span class="dv">0</span>:(<span class="kw">length</span>(<span class="kw">unique</span>(modules))-<span class="dv">1</span>)){
+  GSEAGO[[i<span class="dv">+1</span>]] =<span class="st"> </span><span class="kw">summary</span>(<span class="kw">hyperGTest</span>(<span class="kw">GSEAGOHyperGParams</span>(<span class="dt">name =</span> <span class="st">'Homo sapiens GO'</span>, 
+              <span class="dt">geneSetCollection =</span> gsc, <span class="dt">geneIds =</span> <span class="kw">colnames</span>(RNAseq)[modules==i], 
+              <span class="dt">universeGeneIds =</span> ref.genes, <span class="dt">ontology =</span> <span class="st">'BP'</span>, <span class="dt">pvalueCutoff =</span> <span class="fl">0.05</span>, 
+              <span class="dt">conditional =</span> <span class="ot">FALSE</span>, <span class="dt">testDirection =</span> <span class="st">'over'</span>)))
+  <span class="kw">print</span>(i)
+}
+
+cutoff_size =<span class="st"> </span><span class="dv">100</span>
+
+GO_module_name =<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>,<span class="kw">length</span>(<span class="kw">unique</span>(modules)))
+for (i in <span class="dv">1</span>:<span class="kw">length</span>(<span class="kw">unique</span>(modules))){
+  GO.module.name[i] =<span class="st"> </span>
+<span class="st">    </span>GSEAGO[[i]][GSEAGO[[i]]$Size&lt;cutoff_size,
+    ][<span class="kw">which</span>(GSEAGO[[i]][GSEAGO[[i]]$Size&lt;cutoff_size,]$Count==<span class="kw">max</span>(GSEAGO[[i]][GSEAGO[[i]]$
+<span class="st">    </span>Size&lt;cutoff.size,]$Count)),<span class="dv">7</span>]
+}
+
+GO.module.name[<span class="dv">1</span>] =<span class="st"> 'module 0'</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#calculate module significance</span>
+MS.lscore =<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(GS.lscore,modules))
+MS.lscore$log_p_value =<span class="st"> </span>-<span class="kw">log10</span>(<span class="kw">as.numeric</span>(MS.lscore$p_value))
+MS.lscore =<span class="st"> </span><span class="kw">ddply</span>(MS.lscore, .(modules), summarize, <span class="kw">mean</span>(log_p_value), <span class="kw">sd</span>(log_p_value))
+<span class="kw">colnames</span>(MS.lscore) =<span class="st"> </span><span class="kw">c</span>(<span class="st">'modules'</span>,<span class="st">'pval'</span>,<span class="st">'sd'</span>)
+MS.lscore.bar =<span class="st"> </span><span class="kw">as.numeric</span>(MS.lscore[,<span class="dv">2</span>])
+MS.lscore.bar[MS.lscore.bar&lt;(-<span class="kw">log10</span>(<span class="fl">0.05</span>))] =<span class="st"> </span><span class="dv">0</span>
+<span class="kw">names</span>(MS.lscore.bar) =<span class="st"> </span>GO.module.name
+
+METree.GO =<span class="st"> </span>METree
+label.order =<span class="st"> </span><span class="kw">match</span>(METree$labels,<span class="kw">paste0</span>(<span class="st">'ME'</span>,<span class="kw">labels2colors</span>(<span class="dv">0</span>:(<span class="kw">length</span>(<span class="kw">unique</span>(modules))-<span class="dv">1</span>))))
+METree.GO$labels =<span class="st"> </span>GO.module.name[label.order]
+<span class="kw">plotTree.wBars</span>(<span class="kw">as.phylo</span>(METree.GO), MS.lscore.bar, <span class="dt">tip.labels =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="fl">0.2</span>)</code></pre></div>
+</div>
+<div id="exploration-of-individual-genes-within-co-expression-module" class="section level3">
+<h3>5) Exploration of individual genes within co-expression module</h3>
+<p>Assessing the module significance for different sample traits facilitates an understanding of individual co-expression modules for melanoma biology. As for the prioritisation of variants we are next interested in the role of the variant gene within a co-expression module. To this end, Langfelder and Horvath suggest a ‘fuzzy’ measure of <em>module membership</em> defined as</p>
+<p><span class="math display">\[K^q = |cor(x_i,E^q)|\]</span></p>
+<p>where <span class="math inline">\(x_i\)</span> is the profile of gene <span class="math inline">\(i\)</span> and <span class="math inline">\(E^q\)</span> is the eigengene of module <span class="math inline">\(q\)</span>. Based on this definition, <span class="math inline">\(K\)</span> describes how closely related gene <span class="math inline">\(i\)</span> is to module <span class="math inline">\(q\)</span>. A meaningful visualization is consequently plotting the module membership over the p-value of the respective GS measure. As a third dimension, the dot-size is weighted according to the effect size.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Calculate module membership</span>
+MM =<span class="st"> </span><span class="kw">abs</span>(<span class="kw">bicor</span>(RNAseq, MEs))
+
+<span class="co">#plot individual module of interest (MOI)</span>
+MOI =<span class="st"> </span><span class="dv">3</span> <span class="co">#T cell differentiation co-expression module</span>
+<span class="kw">plot</span>(-<span class="kw">log10</span>(GS.lscore[modules==MOI,<span class="dv">1</span>]), MM[modules==MOI,MOI], <span class="dt">pch=</span><span class="dv">20</span>,
+     <span class="dt">cex=</span>(GS.lscore[modules==MOI,<span class="dv">4</span>]/<span class="kw">max</span>(GS.lscore[,<span class="dv">4</span>],<span class="dt">na.rm=</span><span class="ot">TRUE</span>))*<span class="dv">4</span>,
+     <span class="dt">xlab=</span><span class="st">'p-value (-log10) lymphocyte score'</span>, <span class="dt">ylab=</span><span class="st">'membership to module 3'</span>)
+<span class="kw">abline</span>(<span class="dt">v=</span>-<span class="kw">log10</span>(<span class="fl">0.05</span>), <span class="dt">lty=</span><span class="dv">2</span>, <span class="dt">lwd=</span><span class="dv">2</span>)</code></pre></div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Peter Langfelder and Steve Horvath. WGCNA: an R package for weighted correlation network analysis. In: BMC Bioinformatics 9 (Jan. 2008), pp. 559–559.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Cancer Genome Atlas Network. Genomic Classification of Cutaneous Melanoma. In: Cell 161.7 (June 2015), pp. 1681–1696.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Charity W Law et al. voom: Precision weights unlock linear model analysis tools for RNA-seq read counts. In: Genome biology 15.2 (Jan. 2014), R29–R29.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Chun-Hou Zheng et al. Gene differential coexpression analysis based on biweight correlation and maximum clique. In: BMC bioinformatics 15 Suppl 15 (2014), S3.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Bin Zhang and Steve Horvath. A general framework for weighted gene co-expression network analysis. In: Statistical applications in genetics and molecular biology 4 (2005), Article17.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>Bin Zhang and Steve Horvath. A general framework for weighted gene co-expression network analysis. In: Statistical applications in genetics and molecular biology 4 (2005), Article17.<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Steve Horvath and Jun Dong. Geometric Interpretation of Gene Coexpression Network Analysis. In: PLoS Computational Biology (PLOSCB) 4(8) 4.8 (2008), e1000117–e1000117.<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>Steve Horvath and Jun Dong. Geometric Interpretation of Gene Coexpression Network Analysis. In: PLoS Computational Biology (PLOSCB) 4(8) 4.8 (2008), e1000117–e1000117.<a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>Cancer Genome Atlas Network. Genomic Classification of Cutaneous Melanoma. In: Cell 161.7 (June 2015), pp. 1681–1696.<a href="#fnref9">↩</a></p></li>
+<li id="fn10"><p>S Falcon and R Gentleman. Using GOstats to test gene lists for GO term association. In: Bioinformatics 23.2 (Jan. 2007), pp. 257–258.<a href="#fnref10">↩</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
