@@ -4,7 +4,7 @@ author: |
   | Andreas Mock
   | Cancer Research UK Cambridge Institute, University of Cambridge
 date: '`r Sys.Date()`'
-output: rmarkdown::html_vignette
+output: BiocStyle::html_vignette
 fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Weighted gene co-expression network analysis with TCGA RNAseq data}
