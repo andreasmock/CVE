@@ -1,6 +1,6 @@
 Package: CVE
 Title: Cancer Variant Explorer
-Version: 0.99.41
+Version: 0.99.51
 Authors@R: person("Andreas", "Mock", email = "mock.science@gmail.com", role = c("aut", "cre"))
 Author: Andreas Mock [aut, cre]
 Maintainer: Andreas Mock <mock.science@gmail.com>
@@ -12,21 +12,13 @@ Depends:
 Imports:
     WGCNA,
     plyr,
-    rmarkdown,
-    GO.db,
     RColorBrewer,
     ggplot2,
     ape,
+    dynamicTreeCut,
     jsonlite,
     gplots,
-    limma,
-    phytools,
-    GOstats,
-    GSEABase,
-    impute,
-    preprocessCore,
-    pingr,
-    BiocStyle
+    impute
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -34,6 +26,10 @@ RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
     testthat,
-    BiocStyle
+    BiocStyle,
+    pingr,
+    limma,
+    org.Hs.eg.db,
+    AnnotationDbi
 VignetteBuilder: knitr
 biocViews: BiomedicalInformatics

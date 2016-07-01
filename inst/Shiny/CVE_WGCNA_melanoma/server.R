@@ -44,7 +44,7 @@ suppressWarnings(
   }
 )
 #define colours for plotting
-hmcol <- rev(colorRampPalette(RColorBrewer::brewer.pal(10, "RdBu"))(256))
+hmcol <- rev(colorRampPalette(brewer.pal(10, "RdBu"))(256))
 palette_breaks <- seq(0,1,length.out = 257)
 
 #####################################################
@@ -58,9 +58,9 @@ shinyServer(function(input, output, session) {
   })
 
   output$varianttype <- renderPlot({
-    ggplot2::ggplot(v[[input$sample]], ggplot2::aes(x=Variant_Type)) +
-      ggplot2::geom_bar(stat="count") + ggplot2::xlab("") +
-      ggplot2::theme_bw() + ggplot2::ylab("count")
+    ggplot(v[[input$sample]], aes(x=Variant_Type)) +
+      geom_bar(stat="count") + xlab("") +
+      theme_bw() + ylab("count")
   })
 
   output$variantclass <- renderPlot({
@@ -68,12 +68,12 @@ shinyServer(function(input, output, session) {
     var_col[var_col %in% pc_cat] = "protein changing"
     var_col[!var_col =="protein changing"] = "other"
     df = as.data.frame(cbind(v[[input$sample]], var_col))
-    ggplot2::ggplot(df, ggplot2::aes(x=Variant_Classification, fill=var_col)) +
-      ggplot2::geom_bar(stat="count") + ggplot2::coord_flip() +
-      ggplot2::xlab("") + ggplot2::theme_bw() +
-      ggplot2::guides(fill=ggplot2::guide_legend(reverse=TRUE)) +
-      ggplot2::scale_fill_manual(values = c("gold1","blue")) +
-      ggplot2::labs(fill="Variant classification")
+    ggplot(df, aes(x=Variant_Classification, fill=var_col)) +
+      geom_bar(stat="count") + coord_flip() +
+      xlab("") + theme_bw() +
+      guides(fill=guide_legend(reverse=TRUE)) +
+      scale_fill_manual(values = c("gold1","blue")) +
+      labs(fill="Variant classification")
   })
 
   output$nCoding_SNVs <- renderText({
@@ -86,7 +86,7 @@ shinyServer(function(input, output, session) {
     for (n in 1:length(v)){
       M_temp = pcv[[n]][[2]][!sapply(
         1:nrow(pcv[[n]][[2]]),function(x) TRUE %in% is.na(pcv[[n]][[2]])[x,]),]
-      ConsClust[[n]] = ConsensusClusterPlus::ConsensusClusterPlus(
+      ConsClust[[n]] = ConsensusClusterPlus(
         sweep(M_temp,1,apply(M_temp,1,median,na.rm=T)),maxK=6,reps=input$nperm,
         pItem=0.8,pFeature=0.5, clusterAlg="hc",distance="pearson",
         seed=1262118388.71279,plot=NULL, verbose=FALSE)
@@ -105,8 +105,8 @@ shinyServer(function(input, output, session) {
   CombScoreInput <- reactive({
     ConsClust = ConsClustInput()
     df = as.data.frame(t(pcv[[input$sample]][[2]]),stringsAsFactors = FALSE)
-    centroid = t(plyr::ddply(df, plyr::.(ConsClust[[input$sample]][[as.numeric(
-      input$pred_modules)]]$consensusClass), plyr::colwise(mean, na.rm = TRUE)))
+    centroid = t(ddply(df, .(ConsClust[[input$sample]][[as.numeric(
+      input$pred_modules)]]$consensusClass), colwise(mean, na.rm = TRUE)))
     colnames(centroid) = paste0("module",1:ncol(centroid))
     centroid = centroid[2:nrow(centroid),]
     centroid = apply(centroid,2,as.numeric)
@@ -127,7 +127,7 @@ shinyServer(function(input, output, session) {
     score_col = c("orange","blueviolet","yellow","blueviolet","orange",
                   rep("blueviolet",4),"orange","blueviolet",rep("yellow",7))
     plot.new()
-    gplots::heatmap.2(ConsClust[[input$sample]][[as.numeric(
+    heatmap.2(ConsClust[[input$sample]][[as.numeric(
       input$pred_modules)]]$ml,margins=c(17,17),col=hmcol,
       ColSideColors = ConsClust[[input$sample]][[as.numeric(
         input$pred_modules)]]$clrs[[1]], RowSideColors = score_col,trace="n",
@@ -285,12 +285,12 @@ shinyServer(function(input, output, session) {
 
     par(mfrow=c(1,2))
     par(mar=c(8,0,0,0))
-    a = ape::plot.phylo(ape::as.phylo(METree_GO), font=1, cex=0.90)
+    a = plot.phylo(as.phylo(METree_GO), font=1, cex=0.90)
     plot(0.5,1, xlim=c(0,10),ylim=c(1,42),axes=FALSE, xlab="")
     text(x=0, y=c(1:42), labels  = c(0:41)[label_order][METree_GO$order], xpd=TRUE)
     mtext("module number", las=2, side=1, at=0)
     points(rep(0.5,42),c(1:42),xpd=TRUE,pch=15, cex=1.8,
-           col=c(WGCNA::labels2colors(c(0:41)))[label_order][METree_GO$order])
+           col=c(labels2colors(c(0:41)))[label_order][METree_GO$order])
     mtext("module colour", las=2, side=1, at=0.5)
     text(x=1, y=c(1:42), labels  = topgenes_per_module[label_order][METree_GO$order], xpd=TRUE)
     mtext("# variants", las=2, side=1, at=1)
@@ -385,7 +385,7 @@ shinyServer(function(input, output, session) {
       url = paste0("http://dgidb.genome.wustl.edu/api/v1/interactions.json?genes=",
                    paste(genes, collapse=","),
                    "&drug_types=antineoplastic&interaction_sources=TEND,MyCancerGenome")
-      JSON = jsonlite::fromJSON(url)
+      JSON = fromJSON(url)
     }
   })
 

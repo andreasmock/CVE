@@ -35,7 +35,7 @@ openCVE <- function(x, sample_names, extension=FALSE) {
     stop("x is neither a data frame nor list. Please change format accordingly.")
   }
 
-  shiny::runApp(appDir, display.mode = "normal")
+  runApp(appDir, display.mode = "normal")
 }
 
 ####################
