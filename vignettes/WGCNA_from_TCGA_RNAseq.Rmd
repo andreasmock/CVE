@@ -32,7 +32,8 @@ As read counts follow a negative binomial distribution, which has a mathematical
 normalised with the `voom` methodology[^3]. The `voom` method estimates the mean-variance of the log-counts and generates a precision weight for each observation. This way, a comparative analysis can be performed with all bioinformatic workflows originally developed for microarray analyses.
 
 ```{r, eval=FALSE}
-RNAseq_voom = limma::voom(RNAseq)$E
+library(limma)
+RNAseq_voom = voom(RNAseq)$E
 ```
 
 A large fraction of genes are not differentially expressed between samples. These have to be excluded from WGCNA, as two genes without notable variance in expression between patients will be highly correlated. As a heuristic cutoff, the top 5000 most variant genes have been used in most WGCNA studies. In detail the median absolute devision (MAD) was used as a robust measure of variability.
@@ -48,7 +49,8 @@ The connections within a network can be fully described by its *adjacency matrix
 
 ```{r, eval=FALSE}
 #similarity measure between gene profiles: biweight midcorrelation
-s = abs(WGCNA::bicor(WGCNA_matrix))
+library(WGCNA)
+s = abs(bicor(WGCNA_matrix))
 ```
 
 Originally, the co-expression similarity matrix was transformed into the adjacency matrix using a 'hard' threshold. In these *unweighted co-expression networks*, two genes were identified to be linked ($a_{ij} = 1$), if the absolute correlation between their expression profiles were higher than a 'hard' threshold $\tau$. However, this hard threshold does not reflect the underlying continuous co-expression measure and leads to a significant loss of information. As a consequence, Horvath and colleagues introduced a new framework for *weighted gene co-expression analysis* (WGCNA)[^5]. At its core, a weighted adjacency is defined by raising the co-expression similarity to a power ('soft' threshold):
@@ -58,7 +60,6 @@ $$a_{ij} = s_{ij}^\beta$$
 with $\beta \geq 1$. To choose an appropriate $\beta$-value, the authors present a methodology that assesses the scale free topology of the network. For detailed rational of this approach, please see Zhang and Horvath[^5].
 
 ```{r, eval=FALSE}
-require(WGCNA)
 powers = c(c(1:10), seq(from = 12, to=20, by=2))
 sft = pickSoftThreshold(WGCNA_matrix, powerVector = powers, verbose = 5)
 plot(sft$fitIndices[,1], -sign(sft$fitIndices[,3])*sft$fitIndices[,2],
@@ -92,7 +93,6 @@ Please note that TOM-based (topological overlap matrix) dissimilarity proposed b
 To identify co-expression modules, genes are next clustered based on the dissimilarity measure, where branches of the dendrogram correspond to modules. The gene dendrogram obtained by average linkage hierarchical clustering is depicted in figure 2. Ultimately, gene co-expression modules are detected by applying a branch cutting method. We employed the dynamic branch cut method developed by Langfelder and colleagues [^6], as constant height cutoffs exhibit suboptimal performance on complicated dendrograms. WGCNA of the 472 TCGA melanoma samples revealed 41 co-expression modules. All genes that are not significantly co-expressed within a module are summarized in an additional module 0 for further analysis.
  
 ```{r, eval=FALSE}
-require(WGCNA)
 #create gene tree by average linkage hierarchical clustering 
 geneTree = hclust(as.dist(w), method = 'average')
 
@@ -110,7 +110,7 @@ plotDendroAndColors(geneTree, module.colours, 'Module colours', dendroLabels = F
 The relation between the identified co-expression modules can be visualized by a dendrogram of their *eigengenes* (fig. 3). The module *eigengene* is defined as the first principal component of its expression matrix. It could be shown that the module= *eigengene* is highly correlated with the gene that has the highest intramodular connectivity[^6].
 
 ```{r, eval=FALSE}
-library(phytools)
+library(ape)
 #calculate eigengenes
 MEs = moduleEigengenes(WGCNA_matrix, colors = module.colours, excludeGrey = FALSE)$eigengenes
 
@@ -173,16 +173,20 @@ To enable a high-level interpretation of the dendrogram of module eigengenes, ge
 ref_genes = colnames(WGCNA_matrix2)
 
 #create data frame for GO analysis
+library(org.Hs.eg.db)
 GO = toTable(org.Hs.egGO); SYMBOL = toTable(org.Hs.egSYMBOL)
 GO_data_frame = data.frame(GO$go_id, GO$Evidence,SYMBOL$symbol[match(GO$gene_id,SYMBOL$gene_id)])
 
 #create GOAllFrame object
+library(AnnotationDbi)
 GO_ALLFrame = GOAllFrame(GOFrame(GO_data_frame, organism = 'Homo sapiens'))
 
 #create gene set
+library(GSEABase)
 gsc <- GeneSetCollection(GO_ALLFrame, setType = GOCollection())
 
 #perform GO enrichment analysis and save results to list - this make take several minutes
+library(GEOstats)
 GSEAGO = vector('list',length(unique(modules)))
 for(i in 0:(length(unique(modules))-1)){
   GSEAGO[[i+1]] = summary(hyperGTest(GSEAGOHyperGParams(name = 'Homo sapiens GO', 
