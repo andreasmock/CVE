@@ -1,13 +1,9 @@
 export(openCVE)
 
-importFrom(devtools, load_all)
-importFrom(limma, voom)
 importFrom(WGCNA, bicor, labels2colors, plotDendroAndColors, moduleEigengenes)
 importFrom(dynamicTreeCut,cutreeDynamic)
 importFrom(ape, as.phylo, plot.phylo)
 importFrom(AnnotationDbi,GOAllFrame)
-importFrom(GSEABase,GeneSetCollection)
-importFrom(GOstats,hyperGTest)
 importFrom(shiny,runApp)
 importFrom(RColorBrewer, brewer.pal)
 import(ggplot2)
