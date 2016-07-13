@@ -14,7 +14,6 @@ vignette: >
 
 The following tutorial describes the generation of a weighted co-expression network from TCGA (The Cancer Genome Atlas) RNAseq data using the `WGCNA` *R* package by Langfelder and Horvarth[^1]. In addition, individual genes and modules will be related to sample traits. Exemplarly, a co-expression network for skin cutaneous melanomas (SKCM) will be generated. However, the following weighted gene co-expression analysis (WGCNA) framework is applicable to any TCGA tumour entity. 
 
-
 #Assembly and preprocessing of TCGA RNAseq data
 
 Melanoma RNAseq data were downloaded as expression estimates per gene (RNAseq2 level 3 data) from the [TCGA data portal](https://tcga-data.nci.nih.gov/tcga/). 

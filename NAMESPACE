@@ -1,12 +1,1 @@
 export(openCVE)
-
-importFrom(WGCNA, bicor, labels2colors, plotDendroAndColors, moduleEigengenes)
-importFrom(dynamicTreeCut,cutreeDynamic)
-importFrom(ape, as.phylo, plot.phylo)
-importFrom(shiny,runApp)
-importFrom(RColorBrewer, brewer.pal)
-import(ggplot2)
-importFrom(ConsensusClusterPlus,ConsensusClusterPlus)
-import(plyr)
-importFrom(gplots,heatmap.2)
-importFrom(jsonlite,fromJSON)
