@@ -1,6 +1,5 @@
 library(testthat)
 library(CVE)
-library(pingr)
 
 test_that("oncotator example file is in the right format",
           {
