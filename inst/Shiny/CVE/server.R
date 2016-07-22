@@ -181,7 +181,7 @@ shinyServer(function(input, output, session) {
       f[pcv[[input$sample]]$X1000gp3_AF>0] = 0
     }
     if (2 %in% input$db){ #keep all overlapping mutations in COSMIC if selected
-      f[pcv[[input$sample]]$COSMIC_n_overlapping_mutations>0] =1
+      f[as.numeric(pcv[[input$sample]]$COSMIC_n_overlapping_mutations)>0] =1
     }
     if (3 %in% input$db){ #keep all non-SNVs
       nonSNVs = pcv[[input$sample]]$Variant_Type
@@ -203,7 +203,7 @@ shinyServer(function(input, output, session) {
 
   output$COSMIC <- renderPrint({
     f = VarFilterInput()
-    sum((pcv[[input$sample]]$COSMIC_n_overlapping_mutations[f]>0)*1)
+    sum((as.numeric(pcv[[input$sample]]$COSMIC_n_overlapping_mutations[f])>0)*1)
   })
 
   output$DNArepair <- renderTable({

@@ -14,10 +14,12 @@ vignette: >
 
 The following tutorial describes the generation of a weighted co-expression network from TCGA (The Cancer Genome Atlas) RNAseq data using the `WGCNA` *R* package by Langfelder and Horvarth[^1]. In addition, individual genes and modules will be related to sample traits. Exemplarly, a co-expression network for skin cutaneous melanomas (SKCM) will be generated. However, the following weighted gene co-expression analysis (WGCNA) framework is applicable to any TCGA tumour entity. 
 
+The code of this vignette is a proof of principial example that can't be run as listed without assembling the RNAseq data as described in the following beforehand.
+
 #Assembly and preprocessing of TCGA RNAseq data
 
-Melanoma RNAseq data were downloaded as expression estimates per gene (RNAseq2 level 3 data) from the [TCGA data portal](https://tcga-data.nci.nih.gov/tcga/). 
-For WGCNA, the individual TCGA RNAseq2 level 3 files were concatenated to a matrix `RNAseq` with gene symbols as row and TCGA patient barcodes as column names. 
+Melanoma RNAseq data for the CVE extension were downloaded as expression estimates per gene (RNAseq2 level 3 data) from the [TCGA data portal](https://tcga-data.nci.nih.gov/tcga/). Please note that the TCGA Data portal is no longer operational and all TCGA data now resides at the [Genomic Data Commons](https://gdc.nci.nih.gov).
+For WGCNA, the individual TCGA RNAseq2 level 3 files were concatenated to a matrix `RNAseq` with gene symbols as row and TCGA patient barcodes as column names.
 
 Further preprocessing included the removal of control samples (for more information see the [TCGA Wiki](https://wiki.nci.nih.gov/display/TCGA/TCGA+barcode)) and expression estimates with counts in less than 20% of cases.  
 

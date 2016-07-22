@@ -181,7 +181,7 @@ shinyServer(function(input, output, session) {
       f[pcv[[input$sample]]$X1000gp3_AF>0] = 0
     }
     if (2 %in% input$db){ #keep all overlapping mutations in COSMIC if selected
-      f[pcv[[input$sample]]$COSMIC_n_overlapping_mutations>0] =1
+      f[as.numeric(pcv[[input$sample]]$COSMIC_n_overlapping_mutations)>0] =1
     }
     if (3 %in% input$db){ #keep all non-SNVs
       nonSNVs = pcv[[input$sample]]$Variant_Type
@@ -203,7 +203,7 @@ shinyServer(function(input, output, session) {
 
   output$COSMIC <- renderPrint({
     f = VarFilterInput()
-    sum((pcv[[input$sample]]$COSMIC_n_overlapping_mutations[f]>0)*1)
+    sum((as.numeric(pcv[[input$sample]]$COSMIC_n_overlapping_mutations[f])>0)*1)
   })
 
   output$DNArepair <- renderTable({
@@ -314,9 +314,9 @@ shinyServer(function(input, output, session) {
     symbols(7.5+as.numeric(c(MS_Vem_bar[label_order][METree_GO$order]/5))/2,c(1:42),
             rectangles = Vem_rectangles,add=TRUE, xpd=TRUE,inches = FALSE, adj=1, fg="blue", bg="blue",lwd=2)
     mtext("vemurafinib res",las=2,side = 1, at = 7.5)
-    rect(9, 5, 10, 5.7, add=TRUE, xpd=TRUE, col = "grey", border="grey")
+    rect(9, 5, 10, 5.7, xpd=TRUE, col = "grey", border="grey")
     text(labels="0",x=9,y=6.4); text(labels="5",x=10,y=6.4); text(labels = "p-value",x = 9.5,y =  4); text(labels = "(-log10)", x=9.5, y=3)
-    rect(8.75, 2, 10.25, 8, add=TRUE)
+    rect(8.75, 2, 10.25, 8)
   })
 
   output$MExploration <- renderPlot({
