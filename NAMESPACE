@@ -1,6 +1,7 @@
 export(openCVE)
 importFrom(shiny,runApp)
 import(ConsensusClusterPlus)
+import(RColorBrewer)
 import(gplots)
 import(plyr)
 import(ggplot2)
