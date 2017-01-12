@@ -31,9 +31,11 @@ and once installed loaded into the R session by
 library(CVE)
 ```
 
-# Input data
+# Annotate variants using Oncotator 
 
-As input data, CVE leverages output files of the Oncotator Annotation Tool[^1] to prioritise variants. Oncotator has been the Broad Institute’s internal Cancer Genome Analysis pipeline since 2011 and has been successfully applied in numerous high-profile studies. It is a tool for annotating genomic point mutations and short nucleotide insertions/deletions (indels) summarizing information from 14 different publicly available resources relevant for cancer researchers. The authors provide Oncotator both as a web application and a command line tool (http://www.broadinstitute.org/oncotator/). As input information, Oncotator requires the genomic position, reference allele and variant allele in a tab-separated file. Alternatively the VCF format[^2], or the muTect call stats format[^3] can be used. The output is a single tab-separated  file with annotation of all databases in a variant-centric manner.
+As input data, CVE leverages output files of the Oncotator Annotation Tool[^1] to prioritise variants. Oncotator has been the Broad Institute’s internal Cancer Genome Analysis pipeline since 2011 and has been successfully applied in numerous high-profile studies. It is a tool for annotating genomic point mutations and short nucleotide insertions/deletions (indels) summarizing information from 14 different publicly available resources relevant for cancer researchers.
+
+The authors provide Oncotator both as a web application and a command line tool (http://www.broadinstitute.org/oncotator/). As input information, Oncotator requires the genomic position, reference allele and variant allele in a tab-separated file. Alternatively the VCF format[^2], or the muTect call stats format[^3] can be used. The output is a single tab-separated  file with annotation of all databases in a variant-centric manner.
 
 
 The CVE package includes the example Oncotator output file `oncotator_example` for the 1087 mutations prioritised in the melanoma case study. CVE can either work with a data frame containing the output file of one sample or a list containing multiple files.
