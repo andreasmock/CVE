@@ -10,7 +10,7 @@
 #' openCVE(oncotator_example,"case study WGCNA","WGCNAmelanoma")
 #' }
 #' @export
-openCVE <- function(x, sample_names, extension=FALSE) {
+openCVE <- function(x, sample_names=NULL, extension=FALSE) {
   #set app directory
   if(extension=="WGCNAmelanoma"){
     appDir <-system.file("Shiny","CVE_WGCNA_melanoma",package="CVE")
@@ -20,7 +20,9 @@ openCVE <- function(x, sample_names, extension=FALSE) {
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `CVE`.", call. = FALSE)
   }
-
+  if(is.null("sample_names")){
+  sample_names = "sample"
+  }
   #if data frame -> turn into list
   if(class(x)=="data.frame"){
     z = vector("list",1)
