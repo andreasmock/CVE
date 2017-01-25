@@ -20,7 +20,8 @@ openCVE <- function(x, sample_names=NULL, extension=FALSE) {
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `CVE`.", call. = FALSE)
   }
-  if(is.null("sample_names")){
+
+  if(is.null(sample_names)){
   sample_names = "sample"
   }
   #if data frame -> turn into list
