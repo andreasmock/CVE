@@ -14,7 +14,7 @@ vignette: >
 
 # Introduction
 
-An increasing number of precision oncology programmes are being launched world-wide. To support this development, we present the Cancer Variant Explorer (CVE), an R package with an interactive Shiny interface. Leveraging Oncotator annotations[^1] and the Drug Gene Interaction Database, CVE prioritises variants to identify drivers, resistance mechanisms and druggability. We encourage the extension of CVE by additional modules for more tailored analyses and provide a first CVE extension adding the exploration of variant genes in a melanoma-specific co-expression network. The goal of the tutorial is to present the functionality of the CVE package.
+An increasing number of precision oncology programmes are being launched world-wide. To support this development, we present the Cancer Variant Explorer (CVE), an R package with an interactive Shiny interface. Leveraging Oncotator annotations and the Drug Gene Interaction Database, CVE prioritises variants to identify drivers, resistance mechanisms and druggability. We encourage the extension of CVE by additional modules for more tailored analyses and provide a first CVE extension adding the exploration of variant genes in a melanoma-specific co-expression network. The goal of the tutorial is to present the functionality of the CVE package.
 
 # Installation
 
