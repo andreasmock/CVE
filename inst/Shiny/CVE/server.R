@@ -233,7 +233,7 @@ shinyServer(function(input, output, session) {
       f[ThousandG>0] = 0
     }
     if (2 %in% input$db){ #keep all overlapping mutations in COSMIC if selected
-      f[as.numeric(pcv[[input$sample]]$COSMIC_n_overlapping_mutations)>0] =1
+      f[!as.vector((droplevels(as.factor(pcv[[input$sample]]$COSMIC_overlapping_mutation_AAs))))==""] =1
     }
     if (3 %in% input$db){ #keep all non-SNVs
       nonSNVs = pcv[[input$sample]]$variant_type

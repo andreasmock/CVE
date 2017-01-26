@@ -45,15 +45,26 @@ openCVE <- function(x, sample_names=NULL, extension=FALSE) {
 #Data set documentation
 ####################
 
-#' Example Oncotator output for the case study described in the paper
+#' Example Oncotator output for the melanoma cohort study described in the paper
 #'
-#' A dataset containing the example Oncotator output for the case study described in the paper
+#' An Oncotator MAF file
+#'
+#'
+#' @docType data
+#' @keywords datasets
+#' @name melanomaCase
+NULL
+
+#' Example Oncotator output for the single-patient colorectal cancer sample
+#'
+#' An Oncotator MAF file
 #'
 #'
 #' @docType data
 #' @keywords datasets
 #' @name oncotator_example
 NULL
+
 
 #' UV signature gene significance (GS)
 #'
