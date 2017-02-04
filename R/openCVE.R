@@ -62,7 +62,7 @@ NULL
 #'
 #' @docType data
 #' @keywords datasets
-#' @name oncotator_example
+#' @name crcCase
 NULL
 
 

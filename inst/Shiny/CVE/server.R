@@ -34,9 +34,15 @@ if(0 %in% sapply(pcv,nrow)){
 }
 
 #retreive rankscores (rs) from variant information
-rs_names <- colnames(pcv[[1]])[grep("rankscore",colnames(pcv[[1]]))]
-rs_names <- gsub("dbNSFP_",replacement = "",rs_names)
-rs_names = gsub("_rankscore",replacement = "",rs_names)
+#rs_names <- colnames(pcv[[1]])[grep("rankscore",colnames(pcv[[1]]))]
+#rs_names <- gsub("dbNSFP_",replacement = "",rs_names)
+#rs_names = gsub("_rankscore",replacement = "",rs_names)
+rs_names = c("CADD_raw","FATHMM","GERP.._RS","LRT_converted" ,"LR",
+             "MutationAssessor","MutationTaster_converted","Polyphen2_HDIV",
+             "Polyphen2_HVAR","RadialSVM","SIFT_converted","SiPhy_29way_logOdds" ,
+             "phastCons100way_vertebrate","phastCons46way_placental", "phastCons46way_primate",
+             "phyloP100way_vertebrate","phyloP46way_placental","phyloP46way_primate" )
+
 
 suppressWarnings(
   for(n in 1:length(pcv)){

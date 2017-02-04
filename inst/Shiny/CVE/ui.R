@@ -79,7 +79,11 @@ shinyUI(fluidPage(
                                       min = 2, step = 1, max = 6, value = 4)),
                    column(4,
                           selectInput("algorithm", label = h5("choose algorithm"),
-                                      choices=c("dbNSFP combination score",rs_names)))
+                                      choices=c("dbNSFP combination score","CADD_raw","FATHMM","GERP.._RS","LRT_converted" ,"LR",
+                                                                             "MutationAssessor","MutationTaster_converted","Polyphen2_HDIV",
+                                                                             "Polyphen2_HVAR","RadialSVM","SIFT_converted","SiPhy_29way_logOdds" ,
+                                                                             "phastCons100way_vertebrate","phastCons46way_placental", "phastCons46way_primate",
+                                                                             "phyloP100way_vertebrate","phyloP46way_placental","phyloP46way_primate")))
                  ),
                  plotOutput("ConsHM", height=550, width=700)
         ),
