@@ -1,13 +1,15 @@
 #' Open Cancer Variant Explorer (CVE) Shiny app
+#'
 #' @description The openCVE function opens the CVE Shiny app.
 #' The function to supplement the R package with the Shiny app was suggested by Dean Attali (http://deanattali.com). Currently, the only extension available is a melanoma co-expression network (WGCNAmelanoma).
 #' @param x A dataframe (for single file) or list (for multiple oncotator output files)
 #' @param sample_names A character vector with sample name(s)
 #' @param extension A character vector of extention name
+#' @importFrom shiny runApp
 #' @examples
 #' \donttest{
-#' openCVE(oncotator_example,"case study")
-#' openCVE(oncotator_example,"case study WGCNA","WGCNAmelanoma")
+#' openCVE(crcCase,"case study")
+#' openCVE(melanomaCase,"case study WGCNA",extension="WGCNAmelanoma")
 #' }
 #' @export
 openCVE <- function(x, sample_names=NULL, extension=FALSE) {
